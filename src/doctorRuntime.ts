@@ -13,11 +13,15 @@ import { readIdaConfiguration } from "./ida/IdaConfiguration.js";
 import { parseJebMcpEndpoint } from "./jeb/JebMcpEndpoint.js";
 import { selectLinuxPrivateDisplayStrategy } from "./hopper/LinuxPrivateDisplayProbe.js";
 import { ok } from "./domain/result.js";
+import { FirmwareDoctor } from "./firmware/FirmwareDoctor.js";
 
 /** Compose provider diagnostics at the outer CLI adapter boundary. */
 export const createSystemDoctorHost = (
   environment: Readonly<NodeJS.ProcessEnv> = process.env,
+  options: { readonly firmware?: boolean } = {},
 ): DoctorHost => {
+  const firmware =
+    options.firmware === false ? undefined : new FirmwareDoctor(environment);
   const selectedJebEndpoint = environment.REA_JEB_MCP_URL;
   const selectedJebRegistrationEnvironment: Readonly<Record<string, string>> =
     selectedJebEndpoint !== undefined &&
@@ -25,7 +29,7 @@ export const createSystemDoctorHost = (
     parseJebMcpEndpoint(selectedJebEndpoint).ok
       ? { REA_JEB_MCP_URL: selectedJebEndpoint }
       : {};
-  return systemDoctorHost({
+  const host = systemDoctorHost({
     environment,
     providerRegistrationEnvironment: () => selectedJebRegistrationEnvironment,
     resolveProviderRequestBudget: (
@@ -51,9 +55,21 @@ export const createSystemDoctorHost = (
         fileCloseResources,
       }),
       await inspectRadare2Provider(environment),
+      ...((await firmware?.inspect()) ?? []),
     ],
     linuxDemoRuntimeCheck: () => inspectLinuxPrivateDisplay(environment),
   });
+  return {
+    ...host,
+    async close() {
+      const firmwareCleanup = await firmware?.close();
+      const hostCleanup = await host.close?.();
+      const failures = [firmwareCleanup, hostCleanup].filter(
+        (value) => value !== undefined,
+      );
+      return failures.length === 0 ? undefined : failures.join("; ");
+    },
+  };
 };
 
 const HOPPER_DEMO_HELPER_PATH = fileURLToPath(

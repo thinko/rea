@@ -1,4 +1,4 @@
-/** Deep-analysis providers whose readiness can be selected explicitly by doctor. */
+/** Providers whose readiness can be selected explicitly by doctor. */
 export const DOCTOR_PROVIDER_IDS = [
   "hopper",
   "ghidra",
@@ -6,4 +6,6 @@ export const DOCTOR_PROVIDER_IDS = [
   "jadx",
   "kuna",
   "radare2",
+  "binwalk",
+  "unblob",
 ] as const;
