@@ -476,6 +476,7 @@ hosted connector; see [its configuration](client-configuration.md#other-client-s
 | Qwen Code          | `qwen_code`       |
 | Kimi Code          | `kimi`            |
 | VS Code            | `vscode`          |
+| VS Code Insiders   | `vscode_insiders` |
 | Grok Build         | `grok_build`      |
 | OMP                | `omp`             |
 | Pi                 | `pi`              |

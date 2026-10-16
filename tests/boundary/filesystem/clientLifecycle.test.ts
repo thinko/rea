@@ -67,6 +67,7 @@ describe("client configuration filesystem lifecycle", () => {
       "qwen_code",
       "kimi",
       "vscode",
+      "vscode_insiders",
       "trae",
       "workbuddy",
       "grok_build",

@@ -133,6 +133,32 @@ const vscodeUserDirectory = ({
   return join(xdgConfigHome({ home, platform, env }), "Code", "User");
 };
 
+const vscodeInsidersUserDirectory = ({
+  home,
+  platform,
+  env,
+}: ClientPathContext): string => {
+  if (platform === "win32")
+    return join(
+      env.APPDATA ?? join(home, "AppData", "Roaming"),
+      "Code - Insiders",
+      "User",
+    );
+  if (platform === "darwin")
+    return join(
+      home,
+      "Library",
+      "Application Support",
+      "Code - Insiders",
+      "User",
+    );
+  return join(
+    xdgConfigHome({ home, platform, env }),
+    "Code - Insiders",
+    "User",
+  );
+};
+
 const traeUserDirectory = ({
   home,
   platform,
@@ -616,6 +642,14 @@ export const SUPPORTED_CLIENT_DEFINITIONS = [
     configPath: (context: ClientPathContext) =>
       join(vscodeUserDirectory(context), "mcp.json"),
     markerPath: vscodeUserDirectory,
+    format: "vscode",
+  },
+  {
+    name: "vscode_insiders",
+    displayName: "VS Code Insiders",
+    configPath: (context: ClientPathContext) =>
+      join(vscodeInsidersUserDirectory(context), "mcp.json"),
+    markerPath: vscodeInsidersUserDirectory,
     format: "vscode",
   },
   {

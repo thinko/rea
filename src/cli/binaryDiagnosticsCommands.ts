@@ -72,7 +72,7 @@ export const registerBinaryDiagnosticsCommands = (
               () =>
                 packer.inspect(
                   {
-                    path: resolve(args.path),
+                    path: absoluteCallerPath(args.path),
                     max_file_bytes: options.maxFileBytes,
                   },
                   { signal },
