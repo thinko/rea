@@ -12,6 +12,7 @@ import { CUTTER_TOOL_CONTRACTS } from "./cutterToolContracts.js";
 import { REVERSE_ENGINEERING_TOOL_CONTRACTS } from "./reverseEngineeringToolContracts.js";
 import { GDB_TOOL_CONTRACTS } from "./gdbToolContracts.js";
 import { RIZIN_DEBUG_TOOL_CONTRACTS } from "./rizinDebugToolContracts.js";
+import { RADARE2_SESSION_TOOL_CONTRACTS } from "./radare2SessionToolContracts.js";
 import { ARTIFACT_TOOL_CONTRACTS } from "./artifactToolContracts.js";
 import { MANAGED_TOOL_CONTRACTS } from "./managed/managedToolContracts.js";
 import { FIRMWARE_TOOL_CONTRACTS } from "./firmware/firmwareToolContracts.js";
@@ -65,6 +66,7 @@ export const TOOL_FAMILY_DEFINITIONS = [
       ...REVERSE_ENGINEERING_TOOL_CONTRACTS,
       ...GDB_TOOL_CONTRACTS,
       ...RIZIN_DEBUG_TOOL_CONTRACTS,
+      ...RADARE2_SESSION_TOOL_CONTRACTS,
     ],
   },
   {
